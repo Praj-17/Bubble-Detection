@@ -20,7 +20,7 @@ def send_email(recipients, attachment_path):
 
     with open(attachment_path, "rb") as f:
         attachment = MIMEApplication(f.read(), _subtype="csv")
-        attachment.add_header('Content-Disposition', 'attachment', filename=r"C:\Users\ASUS\Downloads\Data (2)\timeline.csv")
+        attachment.add_header('Content-Disposition', 'attachment', filename=r"record.csv")
         msg.attach(attachment)
 
     smtp_server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -33,7 +33,7 @@ def send_email(recipients, attachment_path):
 if __name__ == '__main__':
     # Schedule the email to be sent every day at 10 AM
     send_time = "19:15"
-    schedule.every().day.at(send_time).do(send_email, recipients=["pwaykos1@gmail.com"], attachment_path=r"C:\Users\ASUS\Downloads\Data (2)\timeline.csv")
+    schedule.every().day.at(send_time).do(send_email, recipients=["pwaykos1@gmail.com"], attachment_path="record.csv")
 
     # Keep the program running to allow scheduled tasks to be executed
     while True:
