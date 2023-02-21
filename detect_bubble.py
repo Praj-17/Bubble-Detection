@@ -1,12 +1,11 @@
-#!/usr/bin/env python
-# coding: utf-8
+
 
 
 import cv2
 import numpy as np
 
 # Load the video
-cap = cv2.VideoCapture('plant2.mp4')
+cap = cv2.VideoCapture('Data/plant2.mp4')
 
 # Loop through each frame of the video
 while cap.isOpened():
