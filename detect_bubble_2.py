@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 
 # Load the video
-cap = cv2.VideoCapture('Data/plant2.mp4')
+cap = cv2.VideoCapture('Data/plant1.mp4')
 
 # Loop through each frame of the video
 while cap.isOpened():
@@ -25,16 +25,26 @@ while cap.isOpened():
 
     # Define the parameters for blob detection
     params = cv2.SimpleBlobDetector_Params()
-    params.filterByCircularity = True
-    params.minCircularity = 0.3
-    params.filterByInertia = True
-    params.minInertiaRatio = 0.3
-    params.filterByConvexity = True
-    params.minConvexity = 0.3
-    params.filterByColor = False
+    
+    # params.filterByColor = True
+    # params.blobColor = 220
+
+    # Filter by area
     params.filterByArea = True
     params.minArea = 50
     params.maxArea = 1000
+
+    # # Filter by circularity
+    params.filterByCircularity = True
+    params.minCircularity = 0.2
+
+    # Filter by convexity
+    params.filterByConvexity = True
+    params.minConvexity = 0.3   
+
+    # Filter by inertia ratio
+    params.filterByInertia = True
+    params.minInertiaRatio = 0.2
 
     # Create the blob detector object and detect blobs
     detector = cv2.SimpleBlobDetector_create(params)
