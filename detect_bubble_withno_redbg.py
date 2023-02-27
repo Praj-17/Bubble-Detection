@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
+
 
 # In[2]:
 
@@ -184,7 +183,7 @@ def get_bubbles(frame):
 
 import numpy as np
 import cv2
-cap = cv2.VideoCapture('plant.mp4')
+cap = cv2.VideoCapture('Data/plant.mp4')
 
 # Define the codec and create VideoWriter object
 fourcc = cv2.VideoWriter_fourcc(*'MP4V')

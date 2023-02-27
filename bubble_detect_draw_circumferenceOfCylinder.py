@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
 
 # In[1]:
 
@@ -68,7 +66,7 @@ def get_circles(image, lower_bound = [141,141,121], upper_bound=[150,150,220]):
 # In[2]:
 
 
-cap = cv2.VideoCapture('plant.mp4')
+cap = cv2.VideoCapture('data/plant.mp4')
 
 # Define the codec and create VideoWriter object
 fourcc = cv2.VideoWriter_fourcc(*'MP4V')
