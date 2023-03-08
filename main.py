@@ -106,7 +106,7 @@ def put_data_on_image(image, total, doubted, leaky, verified,status):
         if status == "No Error":
             text_color = (0, 255, 0)
         else:
-            text_color = (255, 0, 0)
+            text_color = (0, 255, 0)
         
         cv2.putText(image, text, (30, 650), cv2.FONT_HERSHEY_SIMPLEX, font_scale, text_color, font_thickness)
 
