@@ -55,6 +55,8 @@ def put_data_on_image(image, total, doubted, leaky, verified,status):
         image = cv2.imread(image)
         
     else:
+        # image = cv2.copyMakeBorder(image, 80, 0, 0, 0, cv2.BORDER_CONSTANT, value=image[0, 0].tolist())
+        # image = cv2.copyMakeBorder(image, 0, 0, 0, 0, cv2.BORDER_CONSTANT, value=image[0, 0].tolist())
         text1 = f" Total: {total}"
         text2 = f" Doubted: {doubted}"
         text3 = f" Leaky: {leaky}"
@@ -98,7 +100,7 @@ def put_data_on_image(image, total, doubted, leaky, verified,status):
         box_thickness = -1
         box_color = (133,100,9)
         
-        cv2.rectangle(image, (1, image.shape[0] - box_height - 1), (1 + box_width, image.shape[0] - 1), box_color, thickness=box_thickness)
+        cv2.rectangle(image, (1, image.shape[0] - box_height - 10), (10 + box_width, image.shape[0] - 1), box_color, thickness=box_thickness)
 
         text = f'Error status: {status} '
         font_scale = 0.9
