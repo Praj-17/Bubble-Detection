@@ -4,13 +4,20 @@ import numpy as np
 def leak_detection(image):
     global total
     print("Leak detection started")
-    return True
+    leak = [1,0,0]
+    is_leaky = False
+    if 1 in leak:
+        is_leaky= True
+    return leak, is_leaky
 def hydrophone_verification():
     print("Verifying using Hydrophone")
-    return True
+    hydrophone_working_status = True
+    verification_status = True
+    return hydrophone_working_status,  verification_status
 def identify_leaky_cylinder():
     print("identifying leaky cylinder")
-    return 1
+    leaky_cylinder = [1,1,0]
+    return leaky_cylinder
 
 def add_logo(image, logo, pos_y, pos_x, pos_y2=None, pos_x2=None):
     if isinstance(image, str) and os.path.exists(image):
@@ -42,7 +49,7 @@ def add_logo(image, logo, pos_y, pos_x, pos_y2=None, pos_x2=None):
 
    
 
-def put_data_on_image(image, total, doubted, leaky, verified):
+def put_data_on_image(image, total, doubted, leaky, verified,status):
     
     if isinstance(image, str) and os.path.exists(image):
         image = cv2.imread(image)
@@ -62,8 +69,8 @@ def put_data_on_image(image, total, doubted, leaky, verified):
         #Heading
         cv2.putText(image, heading, (270,58), cv2.FONT_HERSHEY_COMPLEX, 1.8, (0,0,0), thickness=2)
 
-        image = add_logo(image, "download.png", 10,10)
-        image = add_logo(image, "download.png", 10,10, 10, image.shape[1]-160)
+        image = add_logo(image, "bpcl_logo.png", 10,10)
+        image = add_logo(image, "bpcl_logo.png", 10,10, 10, image.shape[1]-160)
 
         
         #Data right hand side box
@@ -87,16 +94,20 @@ def put_data_on_image(image, total, doubted, leaky, verified):
 
         #draw the lower left corner box
         box_height = 100
-        box_width = 957
-        box_thickness = 2
+        box_width = 457
+        box_thickness = -1
         box_color = (133,100,9)
+        
         cv2.rectangle(image, (1, image.shape[0] - box_height - 1), (1 + box_width, image.shape[0] - 1), box_color, thickness=box_thickness)
-        cv2.rectangle(image, (1, image.shape[0] - box_height - 1), (1 + box_width, image.shape[0] - 1), box_color, thickness= -1)
 
-        text = 'Error status: '
+        text = f'Error status: {status} '
         font_scale = 0.9
         font_thickness = 2
-        text_color = (0, 0, 0)
+        if status == "No Error":
+            text_color = (0, 255, 0)
+        else:
+            text_color = (255, 0, 0)
+        
         cv2.putText(image, text, (30, 650), cv2.FONT_HERSHEY_SIMPLEX, font_scale, text_color, font_thickness)
 
         return image
@@ -117,6 +128,7 @@ if __name__ == "__main__":
     doubted = 0
     leaky = 0
     verified = 0
+    status = "No Error"
     while cam.isOpened():
         try:
             ret, frame =cam.read()
@@ -124,13 +136,15 @@ if __name__ == "__main__":
             ret = None
             frame = None
             print("Exception", e)
+            status = "Camera Disconnected"
         if ret == False or frame is None:
             print("Camera Frame cannot be loaded")
-            error_status(frame, 'Camera Frame cannot be loaded',(20, 50), error_status='Error')
-            break
+            # error_status(frame, 'Camera Frame cannot be loaded',(20, 50), error_status='Error')
+            status = "Camera Disconnected"
+            continue
         
         try:
-            is_leaky = leak_detection(frame)
+            leak, is_leaky = leak_detection(frame)
         except Exception as e:
             is_leaky = False
             print("Exception", e)
@@ -140,16 +154,18 @@ if __name__ == "__main__":
             
             #Going for Hydrophone verfication
             try:
-                hydrophone_verification_flag = hydrophone_verification()
+                hydrophone_working_status,  verification_status = hydrophone_verification()
+                if hydrophone_working_status ==False:
+                    status = "Hydrophone Disconnected"
                 verified +=1
             except Exception as e:
-                hydrophone_verification_flag = False
+                verification_status = False
                 print("Exception", e)
             
-            if hydrophone_verification_flag == True:
+            if verification_status == True:
                 leaky +=1
                 
-                frame = put_data_on_image(frame,total, doubted, leaky, verified)
+                frame = put_data_on_image(frame,total, doubted, leaky, verified, status)
                 #Going For identification of Leaky Cylinder
                  # Press Q on keyboard to exit
                 cv2.imshow("frame", frame)
