@@ -47,7 +47,11 @@ def add_logo(image, logo, pos_y, pos_x, pos_y2=None, pos_x2=None):
     # image[pos_y:pos_y+logo.shape[0], pos_x:pos_x+logo.shape[1]] = overlay
     return image
 
-   
+def draw_border(image, top, bottom, left, right, color = (0,0,0) ):
+        border_color = (0,0,0)
+        img_with_border = cv2.copyMakeBorder(image,  top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)
+        return img_with_border
+        
 
 def put_data_on_image(image, total, doubted, leaky, verified,status):
     
@@ -57,50 +61,51 @@ def put_data_on_image(image, total, doubted, leaky, verified,status):
     else:
         # image = cv2.copyMakeBorder(image, 80, 0, 0, 0, cv2.BORDER_CONSTANT, value=image[0, 0].tolist())
         # image = cv2.copyMakeBorder(image, 0, 0, 0, 0, cv2.BORDER_CONSTANT, value=image[0, 0].tolist())
-        text1 = f" Total: {total}"
-        text2 = f" Doubted: {doubted}"
-        text3 = f" Leaky: {leaky}"
-        text4 = f" Verification: {verified}"
+        text1 = f" Total : {total}"
+        text2 = f" Doubted : {doubted}"
+        text3 = f" Leaky : {leaky}"
+        text4 = f" Verified : {verified}"
         heading = "Automatic Leak Detection"
         
         base_x = 950
         base_y = 380
-       
+        # Border to resize the the image
+        image = draw_border(image, 80, 50,0,500 )
         #Rectangele Behind Headings
         cv2.rectangle(image, (0, 0),(1550, 80),(255,255,255), thickness=-1 )
         #Heading
         cv2.putText(image, heading, (270,58), cv2.FONT_HERSHEY_COMPLEX, 1.8, (0,0,0), thickness=2)
 
         image = add_logo(image, "bpcl_logo.png", 10,10)
-        image = add_logo(image, "bpcl_logo.png", 10,10, 10, image.shape[1]-160)
+        image = add_logo(image, "bpcl_logo.png", 10,10, 10, 160)
 
         
         #Data right hand side box
-        cv2.rectangle(image, (base_x+10, base_y-300),(base_x + 350, base_y+350),(133,100,9), thickness=-1 )
+        cv2.rectangle(image, (base_x+50, base_y-300),(base_x + 350, base_y+350),(133,100,9), thickness=-1 )
       
-        cv2.rectangle(image, (base_x+30, base_y-130), (base_x+150, base_y-90), (255, 255, 255), -1)
-        cv2.rectangle(image, (base_x+30, base_y-130), (base_x+150, base_y-90), (0, 0, 0), 2)
-        cv2.rectangle(image, (base_x+30, base_y-70), (base_x+200, base_y-30), (255, 255, 255), -1)
-        cv2.rectangle(image, (base_x+30, base_y-70), (base_x+200, base_y-30), (0, 0, 0), 2)
-        cv2.rectangle(image, (base_x+30, base_y-10), (base_x+160, base_y+30), (255, 255, 255), -1)
-        cv2.rectangle(image, (base_x+30, base_y-10), (base_x+160, base_y+30), (0, 0, 0), 2)
-        cv2.rectangle(image, (base_x+30, base_y+50), (base_x+260, base_y+90), (255, 255, 255), -1)
-        cv2.rectangle(image, (base_x+30, base_y+50), (base_x+260, base_y+90), (0, 0, 0), 2)
+        cv2.rectangle(image, (base_x+70, base_y-130), (base_x+160, base_y-90), (255, 255, 255), -17)
+        cv2.rectangle(image, (base_x+70, base_y-130), (base_x+160, base_y-90), (0, 0, 0), 2)
+        cv2.rectangle(image, (base_x+70, base_y-70), (base_x+215, base_y-30), (255, 255, 255), -1)
+        cv2.rectangle(image, (base_x+70, base_y-70), (base_x+215, base_y-30), (0, 0, 0), 2)
+        cv2.rectangle(image, (base_x+70, base_y-10), (base_x+170, base_y+30), (255, 255, 255), -1)
+        cv2.rectangle(image, (base_x+70, base_y-10), (base_x+170, base_y+30), (0, 0, 0), 2)
+        cv2.rectangle(image, (base_x+70, base_y+50), (base_x+215, base_y+90), (255, 255, 255), -1)
+        cv2.rectangle(image, (base_x+70, base_y+50), (base_x+215, base_y+90), (0, 0, 0), 2)
 
-        cv2.putText(image, "Auto", (base_x+100,base_y-180), cv2.FONT_HERSHEY_COMPLEX, 2, (0,0,0), thickness=2)
-        cv2.putText(image, text1, (base_x+30,base_y-100), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), thickness=2)
-        cv2.putText(image, text2, (base_x+30,base_y-40), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), thickness=2)
-        cv2.putText(image, text3, (base_x+30,base_y + 20), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), thickness=2)
-        cv2.putText(image, text4, (base_x+25,base_y+80), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), thickness=2)
+        cv2.putText(image, "Auto", (base_x+80,base_y-180), cv2.FONT_HERSHEY_COMPLEX, 2, (0,0,0), thickness=2)
+        cv2.putText(image, text1, (base_x+57,base_y-100), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), thickness=2)
+        cv2.putText(image, text2, (base_x+57,base_y-40), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), thickness=2)
+        cv2.putText(image, text3, (base_x+55,base_y + 20), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), thickness=2)
+        cv2.putText(image, text4, (base_x+55,base_y+80), cv2.FONT_HERSHEY_COMPLEX, 1, (0,0,0), thickness=2)
 
 
         #draw the lower left corner box
-        box_height = 100
+        box_height = 600
         box_width = 457
         box_thickness = -1
         box_color = (133,100,9)
         
-        cv2.rectangle(image, (1, image.shape[0] - box_height - 10), (10 + box_width, image.shape[0] - 1), box_color, thickness=box_thickness)
+        
 
         text = f'Error status: {status} '
         font_scale = 0.9
@@ -109,8 +114,9 @@ def put_data_on_image(image, total, doubted, leaky, verified,status):
             text_color = (0, 255, 0)
         else:
             text_color = (0, 255, 0)
-        
+        cv2.rectangle(image, (0, box_height - 10), (10 + box_width, image.shape[0] - 1), box_color, thickness=box_thickness)
         cv2.putText(image, text, (30, 650), cv2.FONT_HERSHEY_SIMPLEX, font_scale, text_color, font_thickness)
+        
 
         return image
         
@@ -122,7 +128,7 @@ def error_status(img, text, pos, font=cv2.FONT_HERSHEY_SIMPLEX, font_scale=1, co
         cv2.rectangle(img, error_pos, (error_pos[0] + text_width, error_pos[1] + text_height + 10), color, cv2.FILLED)
         cv2.putText(img, error_status, error_pos, font, font_scale, (0, 0, 0), thickness)
     
-    
+
 
 if __name__ == "__main__":
     cam = cv2.VideoCapture("Data\plant.mp4")
@@ -167,9 +173,15 @@ if __name__ == "__main__":
             if verification_status == True:
                 leaky +=1
                 
+            
+                
+                
+                frame = cv2.resize(frame, (1000, 600))
                 frame = put_data_on_image(frame,total, doubted, leaky, verified, status)
                 #Going For identification of Leaky Cylinder
                  # Press Q on keyboard to exit
+                # Resize image before showing
+                
                 cv2.imshow("frame", frame)
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     break
