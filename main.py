@@ -1,9 +1,11 @@
 import cv2
 import os
 import numpy as np
+from bubble_detection import filtered_bubbles
 def leak_detection(image):
     global total
     print("Leak detection started")
+  
     leak = [1,0,0]
     is_leaky = False
     if 1 in leak:
@@ -131,7 +133,7 @@ def error_status(img, text, pos, font=cv2.FONT_HERSHEY_SIMPLEX, font_scale=1, co
 
 
 if __name__ == "__main__":
-    cam = cv2.VideoCapture("Data\plant.mp4")
+    cam = cv2.VideoCapture("Data\plant2.mp4")
     total = 0
     doubted = 0
     leaky = 0
@@ -152,6 +154,9 @@ if __name__ == "__main__":
             continue
         
         try:
+            print(type(frame))
+            frame, fd, td = filtered_bubbles(frame)
+            print(type(frame))
             leak, is_leaky = leak_detection(frame)
         except Exception as e:
             is_leaky = False
@@ -175,7 +180,8 @@ if __name__ == "__main__":
                 
             
                 
-                
+                print("________FRAME_______")
+                print(frame)
                 frame = cv2.resize(frame, (1000, 600))
                 frame = put_data_on_image(frame,total, doubted, leaky, verified, status)
                 #Going For identification of Leaky Cylinder
